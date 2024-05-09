@@ -5,3 +5,15 @@ export const addTask = (task) => {
     };
   };
   
+  
+
+  export const editTask = (index, updatedTask) => {
+    return {
+      type: 'EDIT_TASK',
+      payload: {
+        index,
+        updatedTask
+      }
+    };
+  };
+  

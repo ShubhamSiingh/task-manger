@@ -23,8 +23,9 @@ const taskSlice = createSlice({
       state.tasks[index].completionStatus = !state.tasks[index].completionStatus;
       localStorage.setItem('tasks', JSON.stringify(state.tasks));
     },
-    updateTask: (state, action) => {
+    editTask: (state, action) => {
       const { index, updatedTask } = action.payload;
+      console.log(action.payload,"updateTask");
       state.tasks[index] = updatedTask;
       localStorage.setItem('tasks', JSON.stringify(state.tasks));
     },
@@ -34,5 +35,34 @@ const taskSlice = createSlice({
   }
 });
 
-export const { addTask, deleteTask, toggleCompletion, updateTask, loadTasks } = taskSlice.actions;
+
+
+const reducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_TASK':
+      return {
+        ...state,
+        tasks: [...state.tasks, action.payload]
+      };
+      case 'EDIT_TASK':
+        const { index, updatedTask } = action.payload;
+        const updatedTasks = state.tasks.map((task, idx) => {
+          if (idx === index) {
+            return updatedTask;
+          }
+          return task;
+        });
+        return {
+          ...state,
+          tasks: updatedTasks
+        };
+  
+    default:
+      return state;
+  }
+};
+
+
+
+export const { addTask, deleteTask, toggleCompletion, editTask, loadTasks } = taskSlice.actions;
 export default taskSlice.reducer;

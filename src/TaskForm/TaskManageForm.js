@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { addTask ,updateTask } from '../Components/reducer';
+import { addTask ,editTask } from '../Components/reducer';
+import './TaskManageForm.css';
+
 
 function TaskManageForm({ taskToEdit }) {
     const [title, setTitle] = useState(taskToEdit ? taskToEdit.title : '');
@@ -14,7 +16,7 @@ function TaskManageForm({ taskToEdit }) {
     const handleSubmit = (e) => {
       e.preventDefault();
       if (taskToEdit) {
-        dispatch(updateTask({ ...taskToEdit, title, description, priority, dueDate, completionStatus }));
+        dispatch(editTask({ ...taskToEdit, title, description, priority, dueDate, completionStatus }));
       } else {
         dispatch(addTask({ title, description, priority, dueDate, completionStatus }));
       }
@@ -36,33 +38,36 @@ function TaskManageForm({ taskToEdit }) {
     }, [taskToEdit]);
   
     return (
-      <div>
-        <h2>{taskToEdit ? 'Edit Task' : 'Add Task'}</h2>
-        <form onSubmit={handleSubmit}>
-          <label>
+      <div  className="form-container"> {/* Apply the CSS class */}
+         <h2 className="form-title">{taskToEdit ? 'Edit Task' : 'Add Task'}</h2>
+        <form onSubmit={handleSubmit} className="form"> 
+          <label className="form-label"> 
             Title:
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              className="form-input"
               required
             />
           </label>
           <br />
-          <label>
+          <label className="form-label"> 
             Description:
             <textarea
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              className="form-input" 
               required
             />
           </label>
           <br />
-          <label>
+          <label className="form-label"> 
             Priority:
             <select
               value={priority}
               onChange={(e) => setPriority(e.target.value)}
+              className="form-input"
               required
             >
               <option value="">Select Priority</option>
@@ -72,26 +77,18 @@ function TaskManageForm({ taskToEdit }) {
             </select>
           </label>
           <br />
-          <label>
+          <label className="form-label"> 
             Due Date:
             <input
               type="date"
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
+              className="form-input" 
               required
             />
           </label>
           <br />
-          <label>
-            Completion Status:
-            <input
-              type="checkbox"
-              checked={completionStatus}
-              onChange={(e) => setCompletionStatus(e.target.checked)}
-            />
-          </label>
-          <br />
-          <button type="submit">{taskToEdit ? 'Update' : 'Submit'}</button>
+          <button type="submit" className="submit-button">{taskToEdit ? 'Update' : 'Submit'}</button>
         </form>
       </div>
     );
